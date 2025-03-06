@@ -105,30 +105,28 @@ def choose_folder():
         return str(filename)
 
 def run(input_path,output_path,video_skip_frame,remove_bg,extract_main,output_width,output_height,file_exts,extract_main_clses):
-
-    print(extract_main_clses)
     if input_path == "" or input_path is None or len(input_path)==0:
         gr.Warning("请选择需要处理的目录💥!", duration=5)
-        return False
+        return
     
     if output_path == "" or output_path is None or len(output_path)==0:
         gr.Warning("请选择输出目录💥!", duration=5)
-        return False
+        return
     
     if file_exts is None or len(file_exts)==0:
         gr.Warning("请选需要处理的文件类型💥!", duration=5)
-        return False
-    
-    if extract_main and extract_main_clses is None or len(extract_main_clses)==0:
+        return
+
+    if extract_main and (extract_main_clses is None or len(extract_main_clses)==0):
         gr.Warning("请选择需要保留的主体类别💥!", duration=5)
-        return False
+        return
 
     main(input_path,output_path,output_width,output_height,video_skip_frame,remove_bg,extract_main,file_exts,extract_main_clses)
-    return True
+
     
 
 with gr.Blocks() as demo:
-    gr.Markdown("# 批量处理数据集", elem_id="title")
+    gr.Markdown("# 图片批量处理工具", elem_id="title")
    
     with gr.Group():    
         with gr.Row():
@@ -166,4 +164,4 @@ with gr.Blocks() as demo:
         run_button.click(run,inputs=[input_path,output_path,video_skip_frame,remove_bg,extract_main,output_width,output_height,file_exts,extract_main_clses],show_progress='full',show_progress_on=[result,run_button]).success(lambda:"处理完成",None,result)
 
         
-demo.launch(debug=True,show_error=True)
+demo.launch(show_error=True,inbrowser=True)
