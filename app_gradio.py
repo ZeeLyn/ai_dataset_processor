@@ -104,7 +104,7 @@ def choose_folder():
         root.destroy()
         return str(filename)
 
-def run(input_path,output_path,video_skip_frame,remove_bg,extract_main,output_width,output_height,file_exts,extract_main_clses):
+def run(input_path,output_path,video_skip_frame,remove_bg,extract_main,output_width,output_height,file_exts,extract_main_clses,create_caption,caption_text):
     if input_path == "" or input_path is None or len(input_path)==0:
         gr.Warning("请选择需要处理的目录💥!", duration=5)
         return
@@ -121,7 +121,7 @@ def run(input_path,output_path,video_skip_frame,remove_bg,extract_main,output_wi
         gr.Warning("请选择需要保留的主体类别💥!", duration=5)
         return
 
-    main(input_path,output_path,output_width,output_height,video_skip_frame,remove_bg,extract_main,file_exts,extract_main_clses)
+    main(input_path,output_path,output_width,output_height,video_skip_frame,remove_bg,extract_main,file_exts,extract_main_clses,create_caption,caption_text)
 
     
 
@@ -156,12 +156,15 @@ with gr.Blocks() as demo:
         output_width = gr.Number(label="输出图片宽度",value=1024,interactive=True)
         output_height = gr.Number(label="输出图片高度",value=768,interactive=True)
     with gr.Row():
+        create_caption = gr.Checkbox(label="创建图片描述文件")
+        caption_text = gr.Textbox(label="图片描述",  interactive=True,scale=8)
+    with gr.Row():
         run_button=gr.Button(value='开始处理',variant='primary')
         
         
     with gr.Row():
         result= gr.Textbox(label="处理结果")
-        run_button.click(run,inputs=[input_path,output_path,video_skip_frame,remove_bg,extract_main,output_width,output_height,file_exts,extract_main_clses],show_progress='full',show_progress_on=[result,run_button]).success(lambda:"处理完成",None,result)
+        run_button.click(run,inputs=[input_path,output_path,video_skip_frame,remove_bg,extract_main,output_width,output_height,file_exts,extract_main_clses,create_caption,caption_text],show_progress='full',show_progress_on=[result,run_button]).success(lambda:"处理完成",None,result)
 
         
 demo.launch(show_error=True,inbrowser=True)

@@ -34,7 +34,7 @@ def process(image:np.ndarray,output_width:int,output_height:int,remove_bg:bool,e
     # 调用resize_image函数，将图像调整为指定的大小
     return dataset_process.resize_image(image,output_width,output_height)
 
-def main(input_folder,output_folder,output_width,output_height,skip_frame,remove_bg,extract_main,file_exts,extract_main_clses):
+def main(input_folder,output_folder,output_width,output_height,skip_frame,remove_bg,extract_main,file_exts,extract_main_clses,create_caption,caption_text):
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
         
@@ -54,15 +54,18 @@ def main(input_folder,output_folder,output_width,output_height,skip_frame,remove
                 if frame_index%skip_frame!=0:
                     continue
                 counter+=1
-                cv2.imwrite(os.path.join(output_folder,f'{counter:06}.org.jpg'),frame)
+                # cv2.imwrite(os.path.join(output_folder,f'{counter:06}.org.jpg'),frame)
                 img= process(frame,output_width,output_height,remove_bg,extract_main,extract_main_clses)
                 cv2.imwrite(os.path.join(output_folder,f'{counter:06}.jpg'),img)
                 
         else:
             counter+=1
-            cv2.imwrite(os.path.join(output_folder,f'{counter:06}.org.jpg'),cv2.imread(file))
+            # cv2.imwrite(os.path.join(output_folder,f'{counter:06}.org.jpg'),cv2.imread(file))
             img= process(cv2.imread(file),output_width,output_height,remove_bg,extract_main,extract_main_clses)
             cv2.imwrite(os.path.join(output_folder,f'{counter:06}.jpg'),img)
+        if create_caption:
+            with open(os.path.join(output_folder,f'{counter:06}.txt'),'w', encoding='utf-8') as f:
+                    f.write(caption_text)
             
 
 if __name__ == "__main__":
