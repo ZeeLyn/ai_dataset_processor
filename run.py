@@ -22,7 +22,7 @@ def list_images_and_videos(folder,file_exts):
             if file_ext.lower() in file_exts:
                 yield os.path.join(root,file),file_ext.lower()
 
-def process(image:np.ndarray,output_width:int,output_height:int,remove_bg:bool,extract_main:bool,extract_main_clses:list):
+def process(image:np.ndarray,size_handle_type:int,output_width:int,output_height:int,output_max_size:int,remove_bg:bool,extract_main:bool,extract_main_clses:list):
    
     # 如果需要提取主体，则调用extract_main函数
     if extract_main:
@@ -32,9 +32,9 @@ def process(image:np.ndarray,output_width:int,output_height:int,remove_bg:bool,e
         image=dataset_process.remove_background(image)
         
     # 调用resize_image函数，将图像调整为指定的大小
-    return dataset_process.resize_image(image,output_width,output_height)
+    return dataset_process.resize_image(image,size_handle_type,output_width,output_height,output_max_size)
 
-def main(input_folder,output_folder,output_width,output_height,skip_frame,remove_bg,extract_main,file_exts,extract_main_clses,create_caption,caption_text,start_index=0):
+def main(input_folder,output_folder,size_handle_type,output_width,output_height,output_max_size,skip_frame,remove_bg,extract_main,file_exts,extract_main_clses,create_caption,caption_text,start_index=0):
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
         
@@ -55,7 +55,7 @@ def main(input_folder,output_folder,output_width,output_height,skip_frame,remove
                     continue
                 counter+=1
                 # cv2.imwrite(os.path.join(output_folder,f'{counter:06}.org.jpg'),frame)
-                img= process(frame,output_width,output_height,remove_bg,extract_main,extract_main_clses)
+                img= process(frame,size_handle_type,output_width,output_height,output_max_size,remove_bg,extract_main,extract_main_clses)
                 cv2.imwrite(os.path.join(output_folder,f'{counter:06}.jpg'),img)
                 if create_caption:
                     with open(os.path.join(output_folder,f'{counter:06}.txt'),'w', encoding='utf-8') as f:
@@ -64,7 +64,7 @@ def main(input_folder,output_folder,output_width,output_height,skip_frame,remove
         else:
             counter+=1
             # cv2.imwrite(os.path.join(output_folder,f'{counter:06}.org.jpg'),cv2.imread(file))
-            img= process(cv2.imread(file),output_width,output_height,remove_bg,extract_main,extract_main_clses)
+            img= process(cv2.imread(file),size_handle_type,output_width,output_height,output_max_size,remove_bg,extract_main,extract_main_clses)
             cv2.imwrite(os.path.join(output_folder,f'{counter:06}.jpg'),img)
         if create_caption:
             with open(os.path.join(output_folder,f'{counter:06}.txt'),'w', encoding='utf-8') as f:

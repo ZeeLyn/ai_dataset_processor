@@ -59,24 +59,39 @@ class dataset_process:
             return image
         
     # 缩放图片到固定大小
-    def resize_image(self,image:np.ndarray, new_width:int, new_height:int):
+    def resize_image(self,image:np.ndarray,size_handle_type:int, new_width:int, new_height:int,output_max_size:int):
         h, w = image.shape[:2]
-        
-        # 计算缩放比例
-        scale_width = new_width / w
-        scale_height = new_height / h
-        scale = min(scale_width, scale_height)  # 选择较小的比例以保持宽高比
-        
-        # 计算新尺寸，使用较小的比例
-        new_w = int(w * scale)
-        new_h = int(h * scale)
-        
-        # 创建新的图像，背景色设置为黑色
-        new_image = np.full((new_height, new_width, 3), 0, dtype=np.uint8)
-        
-        # 将原始图像粘贴到新图像上，居中显示
-        x = (new_width - new_w) // 2
-        y = (new_height - new_h) // 2
-        new_image[y:y+new_h, x:x+new_w] = cv2.resize(image, (new_w, new_h))
+        new_image=image
+        # 固定尺寸，不够的地方填充黑色
+        if size_handle_type==0:
+            # 计算缩放比例
+            scale_width = new_width / w
+            scale_height = new_height / h
+            scale = min(scale_width, scale_height)  # 选择较小的比例以保持宽高比
+            
+            # 计算新尺寸，使用较小的比例
+            new_w = int(w * scale)
+            new_h = int(h * scale)
+            
+            # 创建新的图像，背景色设置为黑色
+            new_image = np.full((new_height, new_width, 3), 0, dtype=np.uint8)
+            
+            # 将原始图像粘贴到新图像上，居中显示
+            x = (new_width - new_w) // 2
+            y = (new_height - new_h) // 2
+            new_image[y:y+new_h, x:x+new_w] = cv2.resize(image, (new_w, new_h))
+        # 固定宽度，高度自动缩放
+        elif size_handle_type==1:
+            new_image=cv2.resize(image,(new_width,int(new_width*h/w)))
+        # 固定高度，宽度自动缩放
+        elif size_handle_type==2:
+            new_image=cv2.resize(image,(int(new_height*w/h),new_height))
+        elif size_handle_type==3:
+            if h>w:
+                new_image=cv2.resize(image,(int(output_max_size*w/h),output_max_size))
+            else:
+                new_image=cv2.resize(image,(output_max_size,int(output_max_size*h/w)))
+        else:
+            pass
         
         return new_image
