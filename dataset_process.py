@@ -79,18 +79,18 @@ class dataset_process:
             # 将原始图像粘贴到新图像上，居中显示
             x = (new_width - new_w) // 2
             y = (new_height - new_h) // 2
-            new_image[y:y+new_h, x:x+new_w] = cv2.resize(image, (new_w, new_h))
+            new_image[y:y+new_h, x:x+new_w] = cv2.resize(image, (new_w, new_h),interpolation=cv2.INTER_AREA)
         # 固定宽度，高度自动缩放
         elif size_handle_type==1:
-            new_image=cv2.resize(image,(new_width,int(new_width*h/w)))
+            new_image=cv2.resize(image,(new_width,int(new_width*h/w)),interpolation=cv2.INTER_AREA)
         # 固定高度，宽度自动缩放
         elif size_handle_type==2:
-            new_image=cv2.resize(image,(int(new_height*w/h),new_height))
+            new_image=cv2.resize(image,(int(new_height*w/h),new_height),interpolation=cv2.INTER_AREA)
         elif size_handle_type==3:
             if h>w:
-                new_image=cv2.resize(image,(int(output_max_size*w/h),output_max_size))
+                new_image=cv2.resize(image,(int(output_max_size*w/h),output_max_size),interpolation=cv2.INTER_AREA)
             else:
-                new_image=cv2.resize(image,(output_max_size,int(output_max_size*h/w)))
+                new_image=cv2.resize(image,(output_max_size,int(output_max_size*h/w)),interpolation=cv2.INTER_AREA)
         else:
             pass
         

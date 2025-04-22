@@ -140,7 +140,7 @@ with gr.Blocks() as app:
             input_browse_btn = gr.Button("选择",variant='primary')
             input_browse_btn.click(choose_folder,outputs=input_path,show_progress=False)
 
-        file_exts= gr.Dropdown(choices=[".jpg",".jpeg", ".png",".mp4",".avi",'.mov'],multiselect=True,label="选择需要处理的文件类型")
+        file_exts= gr.Dropdown(choices=[".jpg",".jpeg", ".png",".webp",".mp4",".avi",'.mov'],multiselect=True,label="选择需要处理的文件类型")
         
     with gr.Row():
         output_path = gr.Textbox(label="选择输出目录",  interactive=True,scale=8)
