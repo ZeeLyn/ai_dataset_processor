@@ -60,7 +60,7 @@ def main(input_folder,output_folder,size_handle_type,output_width,output_height,
                 counter+=1
                 # cv2.imwrite(os.path.join(output_folder,f'{counter:06}.org.jpg'),frame)
                 img= process(frame,size_handle_type,output_width,output_height,output_max_size,remove_bg,extract_main,extract_main_clses)
-                cv2.imwrite(os.path.join(output_folder,f'{counter:06}.jpg'),img)
+                cv2.imwrite(os.path.join(output_folder,f'{counter:06}.jpg'),img,[int(cv2.IMWRITE_JPEG_QUALITY), 100])
                 if create_caption:
                     with open(os.path.join(output_folder,f'{counter:06}.txt'),'w', encoding='utf-8') as f:
                         f.write(caption_text)
@@ -69,7 +69,7 @@ def main(input_folder,output_folder,size_handle_type,output_width,output_height,
             counter+=1
             # cv2.imwrite(os.path.join(output_folder,f'{counter:06}.org.jpg'),cv2.imread(file))
             img= process(cv2.imread(file),size_handle_type,output_width,output_height,output_max_size,remove_bg,extract_main,extract_main_clses)
-            cv2.imwrite(os.path.join(output_folder,f'{counter:06}.jpg'),img)
+            cv2.imwrite(os.path.join(output_folder,f'{counter:06}.jpg'),img,[int(cv2.IMWRITE_JPEG_QUALITY), 100])
         if create_caption:
             with open(os.path.join(output_folder,f'{counter:06}.txt'),'w', encoding='utf-8') as f:
                     f.write(caption_text)
