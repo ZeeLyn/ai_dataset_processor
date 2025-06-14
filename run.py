@@ -37,7 +37,7 @@ def process(image:np.ndarray,size_handle_type:int,output_width:int,output_height
 def main(input_folder,output_folder,size_handle_type,output_width,output_height,output_max_size,skip_frame,remove_bg,extract_main,file_exts,extract_main_clses,create_caption,caption_text,start_index=0):
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
-    print('extract_main_clses',extract_main_clses)
+    # print('extract_main_clses',extract_main_clses)
     counter=start_index
     for file,ext in list_images_and_videos(input_folder,file_exts):
         # print('处理：{0}'.format(file))
